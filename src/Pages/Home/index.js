@@ -1,10 +1,10 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { AuthContext } from "../../Context/AuthContext";
 import { useContext } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { AuthContext } from "../../Context/AuthContext";
 
 export default function Home() {
 
-    const { authLogout } = useContext(AuthContext);
+    const { authLogout, user } = useContext(AuthContext);
 
     return (
         <View style={styles.container}>
@@ -13,15 +13,12 @@ export default function Home() {
                 <Image source={require('../../img/logo.png')} style={styles.logo} />
             </View>
 
-            <View style={styles.body}>
-                <Text>Home</Text>
+            <TouchableOpacity style={styles.logoutButton} onPress={authLogout}>
+                <Text style={styles.textButton}>Sair</Text>
+            </TouchableOpacity>
 
-                <TouchableOpacity style={styles.logoutButton} onPress={authLogout}>
-                    <Text style={styles.textButton}>Desconectar</Text>
-                </TouchableOpacity>
+            <Text style={styles.user}>usuário: {user && user.uid}</Text>
 
-
-            </View>
         </View>
     )
 }
@@ -29,7 +26,7 @@ export default function Home() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFF',
+        backgroundColor: '#DDD',
     },
     header: {
         backgroundColor: '#000',
@@ -41,19 +38,24 @@ const styles = StyleSheet.create({
         width: 236,
         alignSelf: 'center',
     },
-    body: {
-        flex: 1,
+    user: {
+        fontStyle: 'italic',
+        textAlign: 'right',
     },
     logoutButton: {
         backgroundColor: '#000',
         alignSelf: 'center',
-        paddingHorizontal: 10,
-        paddingVertical: 3,
-        borderRadius: 10,
+        paddingVertical: 6,
         justifyContent: 'center',
+        position: 'absolute',
+        bottom: 20,
+        width: '95%',
+        borderRadius: 10,
+
     },
     textButton: {
         color: '#FFF',
-        fontSize: 18,
+        fontSize: 19,
+        textAlign: 'center',
     },
 })

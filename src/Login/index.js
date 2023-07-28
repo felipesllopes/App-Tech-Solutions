@@ -1,6 +1,9 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useContext, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { ActivityIndicator, Dimensions, Image, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import * as yup from "yup";
 import { AuthContext } from "../Context/AuthContext";
 
 export default function Login() {
@@ -10,34 +13,42 @@ export default function Login() {
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
 
-    const [name, setName] = useState('');
-    const [cpf, setCpf] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [visible, setVisible] = useState(false);
-
+    const [invisible, setInvisible] = useState(true);
     const [login, setLogin] = useState(true);
-
     const placeholderColor = '#BBB';
 
-    function handleAccess() {
+    const schemaLogin = yup.object({
+        email: yup.string().email("E-mail inválido.").required("Informe seu e-mail."),
+        password: yup.string().min(6, "A senha deve conter pelo menos 6 dígitos.").required("Informe sua senha."),
+    })
+
+    const schemaRegister = yup.object({
+        name: yup.string().required('Informe seu nome completo.'),
+        cpf: yup.string().min(11, "Digite o CPF completo, apenas números.").required("Informe seu CPF."),
+        email: yup.string().email("E-mail inválido.").required("Informe seu e-mail."),
+        password: yup.string().min(6, "A senha deve conter pelo menos 6 dígitos.").required("Informe sua senha."),
+    })
+
+    const { control, reset, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(login ? schemaLogin : schemaRegister)
+    })
+
+
+    function handleAccess(data) {
         if (login) {
-            authLogin(email, password)
+            authLogin(data.email, data.password)
         } else {
-            authRegister(name, cpf, email, password);
+            authRegister(data.name, data.cpf, data.email, data.password);
         }
     }
 
     function option() {
         setLogin(current => (current === true ? false : true))
-        setName('');
-        setCpf('');
-        setEmail('');
-        setPassword('');
+        reset();
     }
 
     function changeVisibility() {
-        setVisible(current => (current === true ? false : true))
+        setInvisible(current => (current === true ? false : true))
     }
 
     return (
@@ -51,58 +62,88 @@ export default function Login() {
             <View style={{ display: login ? 'none' : 'flex' }}>
 
                 <View style={styles.viewInput}>
-                    <TextInput
-                        value={name}
-                        placeholder='Nome completo'
-                        style={styles.input}
-                        onChangeText={setName}
-                        textAlign="left"
-                        placeholderTextColor={placeholderColor}
+                    <Controller
+                        control={control}
+                        name="name"
+                        render={({ field: { onChange, value } }) => (
+                            <TextInput
+                                value={value}
+                                placeholder='Nome completo'
+                                style={styles.input}
+                                onChangeText={onChange}
+                                textAlign="left"
+                                placeholderTextColor={placeholderColor}
+                            />
+                        )}
                     />
+                    {errors.name && <Text style={styles.msgError}>{errors.name?.message}</Text>}
                 </View>
 
                 <View style={styles.viewInput}>
-                    <TextInput
-                        value={cpf}
-                        placeholder='CPF (apenas os números)'
-                        style={styles.input}
-                        onChangeText={setCpf}
-                        keyboardType="numeric"
-                        textAlign="left"
-                        placeholderTextColor={placeholderColor}
+                    <Controller
+                        control={control}
+                        name="cpf"
+                        render={({ field: { onChange, value } }) => (
+                            <TextInput
+                                value={value}
+                                placeholder='CPF (apenas os números)'
+                                style={styles.input}
+                                onChangeText={onChange}
+                                keyboardType="numeric"
+                                textAlign="left"
+                                maxLength={11}
+                                placeholderTextColor={placeholderColor}
+                            />
+                        )}
                     />
+                    {errors.cpf && <Text style={styles.msgError}>{errors.cpf?.message}</Text>}
                 </View>
 
             </View>
 
             <View style={styles.viewInput}>
-                <TextInput
-                    value={email}
-                    placeholder='E-mail'
-                    style={styles.input}
-                    onChangeText={setEmail}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    placeholderTextColor={placeholderColor}
+                <Controller
+                    control={control}
+                    name="email"
+                    render={({ field: { onChange, value } }) => (
+                        <TextInput
+                            value={value}
+                            placeholder='E-mail'
+                            style={styles.input}
+                            onChangeText={onChange}
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                            placeholderTextColor={placeholderColor}
+                        />
+                    )}
                 />
+                {errors.email && <Text style={styles.msgError}>{errors.email?.message}</Text>}
             </View>
 
             <View style={[styles.viewInput, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}>
-                <TextInput
-                    value={password}
-                    placeholder='Senha'
-                    onChangeText={setPassword}
-                    style={[styles.input, { flex: 1 }]}
-                    autoCapitalize="none"
-                    secureTextEntry={visible}
-                    placeholderTextColor={placeholderColor}
+                <Controller
+                    control={control}
+                    name="password"
+                    render={({ field: { onChange, value } }) => (
+                        <TextInput
+                            value={value}
+                            placeholder='Senha'
+                            onChangeText={onChange}
+                            style={[styles.input, { flex: 1 }]}
+                            autoCapitalize="none"
+                            secureTextEntry={invisible}
+                            placeholderTextColor={placeholderColor}
+                        />
+                    )}
                 />
                 <TouchableOpacity style={styles.visibleButton} onPress={changeVisibility}>
-                    <Icon name={visible ? "eye-slash" : "eye"} size={26} color={'#777'} />
+                    <Icon name={invisible ? "eye-slash" : "eye"} size={26} color={'#777'} />
                 </TouchableOpacity>
+                {errors.password && <Text style={styles.msgError}>{errors.password?.message}</Text>}
             </View>
 
-            <TouchableOpacity style={styles.button} onPress={handleAccess} activeOpacity={0.8}>
+
+            <TouchableOpacity style={styles.button} onPress={handleSubmit(handleAccess)} activeOpacity={0.8}>
                 {loading ?
                     <ActivityIndicator size={30} color={'#FFF'} />
                     :
@@ -110,7 +151,7 @@ export default function Login() {
                 }
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button2} onPress={option} activeOpacity={0.8}>
+            <TouchableOpacity onPress={option} activeOpacity={0.8}>
                 <Text style={styles.textButton2}>{login ? 'Novo cadastro' : 'Fazer login'}</Text>
             </TouchableOpacity>
 
@@ -132,10 +173,12 @@ const styles = StyleSheet.create({
     viewInput: {
         backgroundColor: 'rgba(9,9,9,0.7)',
         margin: 10,
+        marginVertical: 14,
         padding: 4,
         borderRadius: 10,
         paddingLeft: 10,
         height: 38,
+        // elevation: 3,
     },
     input: {
         color: '#FFF',
@@ -147,6 +190,7 @@ const styles = StyleSheet.create({
         marginTop: 25,
         padding: 4,
         borderRadius: 10,
+        elevation: 5,
     },
     visibleButton: {
         paddingHorizontal: 10,
@@ -156,13 +200,17 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'center',
     },
-    button2: {
-
-    },
     textButton2: {
         fontSize: 17,
         color: '#FFF',
         textAlign: 'center',
         textDecorationLine: 'underline',
+    },
+    msgError: {
+        color: '#FFF',
+        marginHorizontal: 5,
+        fontSize: 15,
+        position: 'absolute',
+        top: 38,
     },
 })

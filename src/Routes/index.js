@@ -7,7 +7,6 @@ export default function Routes() {
 
     const { signed } = useContext(AuthContext);
 
-    // fazer condicional para chamar uma rota ou outra
     return (
         signed ? <HomeRoute /> : <AuthRoute />
     )
