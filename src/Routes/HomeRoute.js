@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Employees from '../Pages/Employees';
 import Home from '../Pages/Home';
 import MyProfile from '../Pages/MyProfile';
+import AuthEmployee from './AuthEmployees';
 
 export default function HomeRoute() {
 
@@ -19,15 +19,12 @@ export default function HomeRoute() {
                     borderTopRightRadius: 20,
                     borderBottomRightRadius: 20,
                 },
-                headerTintColor: '#FFF',
                 drawerLabelStyle: {
                     fontSize: 20,
                     fontWeight: 'bold',
                     fontStyle: 'italic',
                 },
-                headerStyle: {
-                    backgroundColor: '#000',
-                }
+
             }}
         >
 
@@ -35,16 +32,16 @@ export default function HomeRoute() {
                 name='Home'
                 component={Home}
                 options={{
-                    headerShown: true,
+                    headerShown: false,
                     title: 'Menu'
                 }}
             />
 
             <Drawer.Screen
-                name='Employees'
-                component={Employees}
+                name='AuthEmployee'
+                component={AuthEmployee}
                 options={{
-                    // headerShown: false,
+                    headerShown: false,
                     title: 'Funcionários'
                 }}
             />
@@ -53,7 +50,7 @@ export default function HomeRoute() {
                 name='MyProfile'
                 component={MyProfile}
                 options={{
-                    // headerShown: false,
+                    headerShown: false,
                     title: 'Meu Perfil'
                 }}
             />

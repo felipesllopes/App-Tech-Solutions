@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../Context/AuthContext";
+import DrawerBack from "../../Components/DrawerBack";
 
 export default function Home() {
 
@@ -8,6 +9,11 @@ export default function Home() {
 
     return (
         <View style={styles.container}>
+
+            <View style={styles.drawer}>
+                <DrawerBack />
+                <Text style={styles.textDrawer}>Menu</Text>
+            </View>
 
             <View style={styles.header}>
                 <Image source={require('../../img/logo.png')} style={styles.logo} />
@@ -27,6 +33,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#DDD',
+    },
+    drawer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#000'
+    },
+    textDrawer: {
+        fontSize: 20,
+        color: '#FFF',
     },
     header: {
         backgroundColor: '#000',

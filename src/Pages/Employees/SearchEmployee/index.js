@@ -1,13 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
-import DrawerBack from "../../Components/DrawerBack";
+import DrawerBack from "../../../Components/DrawerBack";
 
-export default function MyProfile() {
+export default function SearchEmployee() {
     return (
         <View style={styles.container}>
 
             <View style={styles.drawer}>
                 <DrawerBack />
-                <Text style={styles.textDrawer}>Meu Perfil</Text>
+                <Text style={styles.textDrawer}>Pesquisar funcionário</Text>
             </View>
 
         </View>
