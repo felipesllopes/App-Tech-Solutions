@@ -1,23 +1,27 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import RegisterEmployee from "../../Pages/Employees/RegisterEmployee";
 import SearchEmployee from "../../Pages/Employees/SearchEmployee";
+import RegisterEmployees from './registerEmployees';
 
 export default function AuthEmployee() {
 
     const Botton = createBottomTabNavigator();
 
     return (
-        <Botton.Navigator>
+        <Botton.Navigator
+            screenOptions={{
+                tabBarActiveBackgroundColor: '#EEE',
+                tabBarStyle: { borderTopWidth: 0, },
+                tabBarInactiveTintColor: '#666',
+                tabBarActiveTintColor: '#000',
+                tabBarLabelStyle: { fontWeight: 'bold' }
+            }}
+        >
 
-            {/* <Botton.Screen name="Employees"
-                component={Employees}
-                options={{ headerShown: false }} /> */}
-
-            <Botton.Screen name="RegisterEmployee"
-                component={RegisterEmployee}
+            <Botton.Screen name="RegisterEmployees"
+                component={RegisterEmployees}
                 options={{
-                    headerShown: false, title: 'Registrar',
+                    headerShown: false, title: 'Cadastrar',
                     tabBarIcon: ({ color, size }) => (
                         <Ionicons name='person-add' color={'black'} size={33} />
                     )

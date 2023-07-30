@@ -76,6 +76,32 @@ export default function AuthProvider({ children }) {
             })
     }
 
+    async function addDepartment(department) {
+
+        let key = firebase.database().ref('departamento').push().key;
+
+        await firebase.database().ref('departamento').child(key).set({
+            departamento: department,
+        })
+            .catch((e) => {
+                console.log(e)
+                console.log("Ocorreu um imprevisto!")
+            })
+    }
+
+    async function getDepartment() {
+        let array = []
+        firebase.database().ref("departamento").on('value', (snapshot) => {
+            array = [];
+            snapshot.forEach((item) => {
+                let data = {
+                    departamento: item.val().departamento,
+                }
+                array.push(data)
+            })
+        })
+        return array;
+    }
 
     async function authLogout() {
         Alert.alert(
@@ -106,6 +132,8 @@ export default function AuthProvider({ children }) {
             authLogin,
             authRegister,
             authLogout,
+            addDepartment,
+            getDepartment,
         }}>
             {children}
         </AuthContext.Provider>

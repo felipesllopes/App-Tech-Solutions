@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { AuthContext } from "../../Context/AuthContext";
 import DrawerBack from "../../Components/DrawerBack";
+import { AuthContext } from "../../Context/AuthContext";
 
 export default function Home() {
 
@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
         bottom: 20,
         width: '95%',
         borderRadius: 10,
-
     },
     textButton: {
         color: '#FFF',
