@@ -1,8 +1,8 @@
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
+import { Button } from "react-native";
+import { styled } from 'styled-components';
 import DrawerBack from "../../../Components/DrawerBack";
 import firebase from '../../../Firebase/firebaseConnection';
 
@@ -32,31 +32,25 @@ export default function RegisterEmployee() {
 
 
     return (
-        <View style={styles.container}>
+        <Container>
 
-            <View style={styles.drawer}>
-                <DrawerBack />
-                <Text style={styles.textDrawer}>Cadastrar funcionário</Text>
-            </View>
+            <DrawerBack title={'Cadastrar funcionário'} />
 
-            <ScrollView style={styles.body}>
-                <TextInput
-                    style={styles.textInput}
+            <Scroll>
+                <InputText
                     value={name}
                     placeholder="Nome completo"
                     onChangeText={setName}
                 />
 
-                <TextInput
-                    style={styles.textInput}
+                <InputText
                     value={email}
                     placeholder="E-mail"
                     onChangeText={setEmail}
                     keyboardType="email-address"
                 />
 
-                <TextInput
-                    style={styles.textInput}
+                <InputText
                     value={phone}
                     placeholder="Telefone"
                     onChangeText={setPhone}
@@ -64,8 +58,7 @@ export default function RegisterEmployee() {
                     maxLength={11}
                 />
 
-                <TextInput
-                    style={styles.textInput}
+                <InputText
                     value={cpf}
                     placeholder="CPF (apenas números)"
                     onChangeText={setCpf}
@@ -73,12 +66,12 @@ export default function RegisterEmployee() {
                     maxLength={11}
                 />
 
-                <View style={styles.viewDep}>
-                    <Text style={styles.department}>Departamento:</Text>
+                <ViewDep>
+                    <TextDep>Departamento:</TextDep>
                     <Button title='novo dep' onPress={() => navigation.navigate('Department')} />
-                </View>
+                </ViewDep>
 
-                <View style={styles.picker}>
+                <ViewPicker>
                     <Picker
                         selectedValue={department}
                         onValueChange={(item, index) => setDepartment(item)}
@@ -92,52 +85,45 @@ export default function RegisterEmployee() {
                             />
                         ))}
                     </Picker>
-                </View>
+                </ViewPicker>
 
-            </ScrollView>
-        </View>
+            </Scroll>
+        </Container>
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    body: {
-        margin: 10,
-    },
-    drawer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#000'
-    },
-    textDrawer: {
-        fontSize: 20,
-        color: '#FFF',
-    },
-    textInput: {
-        backgroundColor: 'rgba(150,150,150,0.7)',
-        fontSize: 19,
-        borderRadius: 10,
-        padding: 4,
-        paddingHorizontal: 10,
-        marginVertical: 10,
-    },
-    viewDep: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginHorizontal: 10,
-    },
-    department: {
-        fontSize: 19,
-    },
-    picker: {
-        backgroundColor: 'rgba(150,150,150,0.7)',
-        fontSize: 19,
-        borderRadius: 10,
-        marginVertical: 10,
-        height: 42,
-        justifyContent: 'center',
-    }
-})
+const Container = styled.SafeAreaView`
+flex: 1;
+`;
+
+const Scroll = styled.ScrollView`
+margin: 10px;
+`;
+
+const InputText = styled.TextInput`
+background-color: rgba(150,150,150,0.7);
+font-size: 19px;
+border-radius: 10px;
+padding: 4px 10px;
+margin: 10px 0;
+`;
+
+const ViewDep = styled.View`
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+margin: 0 10px;
+`;
+
+const TextDep = styled.Text`
+font-size: 19px;
+`;
+
+const ViewPicker = styled.View`
+background-color: rgba(150,150,150,0.7);
+font-size: 19px;
+border-radius: 10px;
+margin: 10px 0;
+height: 42px;
+justify-content: center;
+`;

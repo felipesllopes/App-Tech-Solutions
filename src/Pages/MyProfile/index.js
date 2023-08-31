@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import DrawerBack from "../../Components/DrawerBack";
 import { AuthContext } from "../../Context/AuthContext";
+import { styled } from "styled-components";
 
 export default function MyProfile() {
 
@@ -14,35 +15,30 @@ export default function MyProfile() {
     }, [])
 
     return (
-        <View style={styles.container}>
+        <Container>
 
-            <View style={styles.drawer}>
-                <DrawerBack />
-                <Text style={styles.textDrawer}>Meu Perfil</Text>
-            </View>
+            <DrawerBack title={'Meu Perfil'} />
 
             {user &&
-                <View>
-                    <Text>Usuário: {user.name}</Text>
-                    <Text>E-mail: {user.email}</Text>
-                    <Text>Uid: {user.uid}</Text>
-                </View>
+                <ViewUser>
+                    <TextUser>Usuário: {user.name}</TextUser>
+                    <TextUser>E-mail: {user.email}</TextUser>
+                    <TextUser>Uid: {user.uid}</TextUser>
+                </ViewUser>
             }
-        </View>
+        </Container>
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    drawer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#000'
-    },
-    textDrawer: {
-        fontSize: 20,
-        color: '#FFF',
-    },
-})
+const Container = styled.SafeAreaView`
+flex: 1;
+background-color: darkcyan;
+`;
+
+const ViewUser = styled.View`
+margin: 5px;
+`;
+
+const TextUser = styled.Text`
+font-size: 16px;
+`;

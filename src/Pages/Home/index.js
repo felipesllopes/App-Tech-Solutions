@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { styled } from "styled-components";
 import DrawerBack from "../../Components/DrawerBack";
 import { AuthContext } from "../../Context/AuthContext";
 
@@ -8,68 +8,67 @@ export default function Home() {
     const { authLogout, user } = useContext(AuthContext);
 
     return (
-        <View style={styles.container}>
+        <Container>
 
-            <View style={styles.drawer}>
+            <Drawer>
                 <DrawerBack />
-                <Text style={styles.textDrawer}>Menu</Text>
-            </View>
+                <TextDrawer>Menu</TextDrawer>
+            </Drawer>
 
-            <View style={styles.header}>
-                <Image source={require('../../img/logo.png')} style={styles.logo} />
-            </View>
+            <Header>
+                <LogoTech source={require('../../img/logo.png')} />
+            </Header>
 
-            <TouchableOpacity style={styles.logoutButton} onPress={authLogout}>
-                <Text style={styles.textButton}>Sair</Text>
-            </TouchableOpacity>
+            <User>usuário: {user && user.name}</User>
 
-            <Text style={styles.user}>usuário: {user && user.uid}</Text>
+            <ButtonLogout onPress={authLogout}>Sair</ButtonLogout>
 
-        </View>
+        </Container>
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#DDD',
-    },
-    drawer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#000'
-    },
-    textDrawer: {
-        fontSize: 20,
-        color: '#FFF',
-    },
-    header: {
-        backgroundColor: '#000',
-        padding: 10,
-        paddingVertical: 20,
-    },
-    logo: {
-        height: 60,
-        width: 236,
-        alignSelf: 'center',
-    },
-    user: {
-        fontStyle: 'italic',
-        textAlign: 'right',
-    },
-    logoutButton: {
-        backgroundColor: '#000',
-        alignSelf: 'center',
-        paddingVertical: 6,
-        justifyContent: 'center',
-        position: 'absolute',
-        bottom: 20,
-        width: '95%',
-        borderRadius: 10,
-    },
-    textButton: {
-        color: '#FFF',
-        fontSize: 19,
-        textAlign: 'center',
-    },
-})
+const Container = styled.SafeAreaView`
+flex: 1;
+background-color: #DDD;
+`;
+
+const Drawer = styled.View`
+flex-direction: row;
+align-items: center;
+background-color: #000;
+`;
+
+const TextDrawer = styled.Text`
+font-size: 20px;
+color: #FFF;
+`;
+
+const Header = styled.View`
+background-color: #000;
+padding: 20px 10px;
+`;
+
+const LogoTech = styled.Image`
+height: 60px;
+width: 236px;
+align-self: center;
+`;
+
+const User = styled.Text`
+font-style: italic;
+font-size: 16px;
+margin-left: 5px;
+`;
+
+const ButtonLogout = styled.Text`
+background-color: #000;
+color: #FFF;
+font-size: 19px;
+text-align: center;
+padding: 6px 0;
+border-radius: 10px;
+position: absolute;
+bottom: 20px;
+width: 95%;
+align-self: center;
+`;

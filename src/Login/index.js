@@ -1,8 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { ActivityIndicator, Dimensions, Image, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Dimensions, View } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { styled } from 'styled-components';
 import * as yup from "yup";
 import { AuthContext } from "../Context/AuthContext";
 
@@ -52,42 +53,40 @@ export default function Login() {
     }
 
     return (
-        <ImageBackground
-            style={[styles.container, { width: windowWidth, height: windowHeight }]}
+        <Wallpaper
+            style={{ width: windowWidth, height: windowHeight }}
             source={require('../img/tech1.jpg')}
         >
 
-            <Image source={require('../img/logo.png')} style={styles.logo} resizeMode="contain" />
+            <LogoTech source={require('../img/logo.png')} resizeMode="contain" />
 
             <View style={{ display: login ? 'none' : 'flex' }}>
 
-                <View style={styles.viewInput}>
+                <ViewInput>
                     <Controller
                         control={control}
                         name="name"
                         render={({ field: { onChange, value } }) => (
-                            <TextInput
+                            <Input
                                 value={value}
                                 placeholder='Nome completo'
-                                style={styles.input}
                                 onChangeText={onChange}
                                 textAlign="left"
                                 placeholderTextColor={placeholderColor}
                             />
                         )}
                     />
-                    {errors.name && <Text style={styles.msgError}>{errors.name?.message}</Text>}
-                </View>
+                    {errors.name && <TextError>{errors.name?.message}</TextError>}
+                </ViewInput>
 
-                <View style={styles.viewInput}>
+                <ViewInput>
                     <Controller
                         control={control}
                         name="cpf"
                         render={({ field: { onChange, value } }) => (
-                            <TextInput
+                            <Input
                                 value={value}
                                 placeholder='CPF (apenas os números)'
-                                style={styles.input}
                                 onChangeText={onChange}
                                 keyboardType="numeric"
                                 textAlign="left"
@@ -96,20 +95,19 @@ export default function Login() {
                             />
                         )}
                     />
-                    {errors.cpf && <Text style={styles.msgError}>{errors.cpf?.message}</Text>}
-                </View>
+                    {errors.cpf && <TextError>{errors.cpf?.message}</TextError>}
+                </ViewInput>
 
             </View>
 
-            <View style={styles.viewInput}>
+            <ViewInput>
                 <Controller
                     control={control}
                     name="email"
                     render={({ field: { onChange, value } }) => (
-                        <TextInput
+                        <Input
                             value={value}
                             placeholder='E-mail'
-                            style={styles.input}
                             onChangeText={onChange}
                             keyboardType="email-address"
                             autoCapitalize="none"
@@ -117,100 +115,103 @@ export default function Login() {
                         />
                     )}
                 />
-                {errors.email && <Text style={styles.msgError}>{errors.email?.message}</Text>}
-            </View>
+                {errors.email && <TextError>{errors.email?.message}</TextError>}
+            </ViewInput>
 
-            <View style={[styles.viewInput, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}>
+            <ViewInput style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Controller
                     control={control}
                     name="password"
                     render={({ field: { onChange, value } }) => (
-                        <TextInput
+                        <Input
                             value={value}
                             placeholder='Senha'
                             onChangeText={onChange}
-                            style={[styles.input, { flex: 1 }]}
+                            style={{ flex: 1 }}
                             autoCapitalize="none"
                             secureTextEntry={invisible}
                             placeholderTextColor={placeholderColor}
                         />
                     )}
                 />
-                <TouchableOpacity style={styles.visibleButton} onPress={changeVisibility}>
-                    <Icon name={invisible ? "eye-slash" : "eye"} size={26} color={'#777'} />
-                </TouchableOpacity>
-                {errors.password && <Text style={styles.msgError}>{errors.password?.message}</Text>}
-            </View>
+                <ButtonVisibility
+                    name={invisible ? "eye-slash" : "eye"}
+                    size={26} color={'#777'}
+                    onPress={changeVisibility}
+                />
+                {errors.password && <TextError>{errors.password?.message}</TextError>}
+            </ViewInput>
 
-
-            <TouchableOpacity style={styles.button} onPress={handleSubmit(handleAccess)} activeOpacity={0.8}>
+            <ButtonRegister style={{ elevation: 10 }} onPress={handleSubmit(handleAccess)} activeOpacity={0.8}>
                 {loading ?
                     <ActivityIndicator size={30} color={'#FFF'} />
                     :
-                    <Text style={styles.textButton}>{login ? 'Logar' : 'Cadastrar'}</Text>
+                    <TextButtonRegister>{login ? 'Logar' : 'Cadastrar'}</TextButtonRegister>
                 }
-            </TouchableOpacity>
+            </ButtonRegister>
 
-            <TouchableOpacity onPress={option} activeOpacity={0.8}>
-                <Text style={styles.textButton2}>{login ? 'Novo cadastro' : 'Fazer login'}</Text>
-            </TouchableOpacity>
+            <ButtonChange
+                onPress={option}>
+                {login ? 'Novo cadastro' : 'Fazer login'}
+            </ButtonChange>
 
-        </ImageBackground>
+        </Wallpaper>
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-    },
-    logo: {
-        width: 295,
-        height: 76,
-        alignSelf: 'center',
-        marginVertical: 25,
-    },
-    viewInput: {
-        backgroundColor: 'rgba(9,9,9,0.7)',
-        margin: 10,
-        marginVertical: 14,
-        padding: 4,
-        borderRadius: 10,
-        paddingLeft: 10,
-        height: 38,
-        // elevation: 3,
-    },
-    input: {
-        color: '#FFF',
-        fontSize: 19,
-    },
-    button: {
-        backgroundColor: 'black',
-        margin: 10,
-        marginTop: 25,
-        padding: 4,
-        borderRadius: 10,
-        elevation: 5,
-    },
-    visibleButton: {
-        paddingHorizontal: 10,
-    },
-    textButton: {
-        color: 'white',
-        fontSize: 20,
-        textAlign: 'center',
-    },
-    textButton2: {
-        fontSize: 17,
-        color: '#FFF',
-        textAlign: 'center',
-        textDecorationLine: 'underline',
-    },
-    msgError: {
-        color: '#FFF',
-        marginHorizontal: 5,
-        fontSize: 15,
-        position: 'absolute',
-        top: 38,
-    },
-})
+const Wallpaper = styled.ImageBackground`
+flex: 1;
+padding: 10px;
+`;
+
+const LogoTech = styled.Image`
+width: 295px;
+height: 76px;
+align-self: center;
+margin: 25px 0;
+`;
+
+const ViewInput = styled.View`
+background-color: rgba(9,9,9,0.7);
+margin: 14px 10px;
+padding: 4px 4px 4px 10px;
+border-radius: 10px;
+height: 38px;
+`;
+
+const Input = styled.TextInput`
+color: #FFF;
+font-size: 19px;
+`;
+
+const ButtonVisibility = styled(Icon)`
+padding: 0 10px;
+`;
+
+const ButtonRegister = styled.TouchableOpacity`
+background-color: #000;
+margin: 25px 10px 10px 10px;
+padding: 4px;
+border-radius: 10px;
+`;
+
+const TextButtonRegister = styled.Text`
+color: #FFF;
+font-size: 20px;
+text-align: center;
+`;
+
+const ButtonChange = styled.Text`
+font-size: 17px;
+color: #FFF;
+text-align: center;
+text-decoration: underline;
+`;
+
+const TextError = styled.Text`
+color: #FFF;
+margin: 0 5px;
+font-size: 16px;
+position: absolute;
+top: 38px;
+`;
