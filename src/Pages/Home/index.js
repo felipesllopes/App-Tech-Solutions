@@ -10,10 +10,7 @@ export default function Home() {
     return (
         <Container>
 
-            <Drawer>
-                <DrawerBack />
-                <TextDrawer>Menu</TextDrawer>
-            </Drawer>
+            <DrawerBack title={'Menu'} />
 
             <Header>
                 <LogoTech source={require('../../img/logo.png')} />
@@ -30,17 +27,6 @@ export default function Home() {
 const Container = styled.SafeAreaView`
 flex: 1;
 background-color: #DDD;
-`;
-
-const Drawer = styled.View`
-flex-direction: row;
-align-items: center;
-background-color: #000;
-`;
-
-const TextDrawer = styled.Text`
-font-size: 20px;
-color: #FFF;
 `;
 
 const Header = styled.View`

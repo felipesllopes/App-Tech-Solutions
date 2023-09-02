@@ -17,6 +17,7 @@ export default function Login() {
     const [invisible, setInvisible] = useState(true);
     const [login, setLogin] = useState(true);
     const placeholderColor = '#BBB';
+    let elevation = 2;
 
     const schemaLogin = yup.object({
         email: yup.string().email("E-mail inválido.").required("Informe seu e-mail."),
@@ -118,7 +119,7 @@ export default function Login() {
                 {errors.email && <TextError>{errors.email?.message}</TextError>}
             </ViewInput>
 
-            <ViewInput style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <ViewInput style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
                 <Controller
                     control={control}
                     name="password"
@@ -142,7 +143,7 @@ export default function Login() {
                 {errors.password && <TextError>{errors.password?.message}</TextError>}
             </ViewInput>
 
-            <ButtonRegister style={{ elevation: 10 }} onPress={handleSubmit(handleAccess)} activeOpacity={0.8}>
+            <ButtonRegister style={{ elevation: 5 }} onPress={handleSubmit(handleAccess)} activeOpacity={0.8}>
                 {loading ?
                     <ActivityIndicator size={30} color={'#FFF'} />
                     :
